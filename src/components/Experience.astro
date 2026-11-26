@@ -1,0 +1,211 @@
+---
+import { experience } from '../data/site';
+---
+
+<section class="section tone-page" id="experience" aria-labelledby="experience-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label" data-reveal>Experience</p>
+      <h2 class="h2" id="experience-h" data-reveal>{experience.headline}</h2>
+    </div>
+
+    <ul class="roles">
+      {
+        experience.now.map((r) => (
+          <li class="role" data-reveal>
+            <div class="role__meta">
+              <span class="role__now">
+                <i aria-hidden="true" />
+                Now
+              </span>
+              <span>{r.period}</span>
+            </div>
+            <div class="role__body">
+              <h3 class="role__org">{r.org}</h3>
+              <p class="role__title">{r.title}</p>
+              {r.text && <p class="role__text">{r.text}</p>}
+              {r.facts && <ul class="role__facts">{r.facts.map((f) => <li>{f}</li>)}</ul>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h3 class="subhead roles__sub" data-reveal>Before</h3>
+    <ul class="roles">
+      {
+        experience.before.map((r) => (
+          <li class="role" data-reveal>
+            <div class="role__meta">
+              <span>{r.period}</span>
+            </div>
+            <div class="role__body">
+              <h4 class="role__org">{r.org}</h4>
+              <p class="role__title">{r.title}</p>
+              {r.text && <p class="role__text">{r.text}</p>}
+              {r.facts && <ul class="role__facts">{r.facts.map((f) => <li>{f}</li>)}</ul>}
+              {
+                r.tags && (
+                  <ul class="role__tags" aria-label="Frameworks">
+                    {r.tags.map((t) => (
+                      <li>{t}</li>
+                    ))}
+                  </ul>
+                )
+              }
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h3 class="subhead roles__sub" data-reveal>Also</h3>
+    <ul class="also" data-reveal>
+      {
+        experience.also.map((r) => (
+          <li class="also__row">
+            <span class="also__org">{r.org}</span>
+            <span class="also__title">{r.title}</span>
+            <span class="also__period">{r.period ?? ''}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .roles {
+    border-top: 1px solid var(--rule);
+  }
+  .roles__sub {
+    margin-top: clamp(56px, 8vw, 104px);
+    margin-bottom: 16px;
+  }
+  .role {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: 12px var(--gutter);
+    padding-block: clamp(32px, 5vw, 64px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .role__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 0.55em;
+    font-size: var(--t-small);
+    color: var(--fg-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .role__now {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--hl);
+  }
+  .role__now i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--spark);
+  }
+  .role__org {
+    font-size: var(--t-h3);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+  }
+  .role__title {
+    margin-top: 8px;
+    font-size: var(--t-lede);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--fg-2);
+    text-wrap: balance;
+  }
+  .role__text {
+    margin-top: clamp(18px, 2vw, 24px);
+    max-width: 38em;
+    text-wrap: pretty;
+  }
+  .role__facts {
+    display: grid;
+    gap: 8px;
+    margin-top: 18px;
+    max-width: 38em;
+    color: var(--fg-2);
+  }
+  .role__facts li {
+    position: relative;
+    padding-left: 24px;
+  }
+  .role__facts li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 12px;
+    height: 1px;
+    background: var(--fg-3);
+  }
+  .role__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    color: var(--fg-2);
+  }
+  .role__tags li:not(:last-child)::after {
+    content: '/';
+    margin-inline: 12px;
+    color: var(--fg-3);
+  }
+
+  .also {
+    border-top: 1px solid var(--rule);
+  }
+  .also__row {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
+    gap: 4px var(--gutter);
+    padding-block: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .also__org {
+    font-weight: 600;
+  }
+  .also__title {
+    color: var(--fg-2);
+  }
+  .also__period {
+    color: var(--fg-2);
+    font-size: var(--t-small);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  @media (max-width: 720px) {
+    .role {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .role__meta {
+      flex-direction: row;
+      gap: 14px;
+      padding-top: 0;
+    }
+    .also__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .also__period {
+      text-align: left;
+    }
+    .also__period:empty {
+      display: none;
+    }
+  }
+</style>

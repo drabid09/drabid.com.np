@@ -1,0 +1,85 @@
+---
+import { letter } from '../data/site';
+---
+
+<section class="section tone-alt" id="about" aria-labelledby="about-label">
+  <div class="wrap letter">
+    <div class="letter__side" data-reveal>
+      <p class="label" id="about-label">A note from me</p>
+      {
+        /* PHOTO SLOT: rendered only when letter.photo is set in src/data/site.ts */
+        letter.photo && (
+          <img
+            class="letter__photo"
+            src={letter.photo.src}
+            srcset={letter.photo.srcset}
+            sizes="(max-width: 720px) 160px, 240px"
+            alt={letter.photo.alt}
+            width={letter.photo.width}
+            height={letter.photo.height}
+            loading="lazy"
+            decoding="async"
+          />
+        )
+      }
+    </div>
+    <div class="letter__body">
+      <p class="letter__hello" data-reveal>{letter.greeting}</p>
+      {letter.paragraphs.map((p) => <p data-reveal set:html={p} />)}
+      <p class="letter__sign" data-reveal>{letter.signoff}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .letter {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: clamp(20px, 3vw, 40px) var(--gutter);
+    align-items: start;
+  }
+  .letter__side {
+    display: grid;
+    gap: clamp(16px, 2vw, 24px);
+    justify-items: start;
+  }
+  .letter .label {
+    padding-top: 0.5em;
+  }
+  .letter__photo {
+    width: min(100%, 240px);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .letter__body {
+    display: grid;
+    gap: clamp(20px, 2.6vw, 32px);
+    max-width: 24em;
+    font-size: clamp(1.375rem, 2.7vw, 2.125rem);
+    font-weight: 600;
+    line-height: 1.24;
+    letter-spacing: -0.024em;
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .letter__body :global(strong) {
+    color: var(--fg);
+    font-weight: inherit;
+  }
+  .letter__hello,
+  .letter__sign {
+    color: var(--fg);
+  }
+  .letter__sign {
+    margin-top: clamp(8px, 1.4vw, 16px);
+  }
+  @media (max-width: 720px) {
+    .letter {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .letter__photo {
+      width: 160px;
+    }
+  }
+</style>

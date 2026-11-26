@@ -1,0 +1,199 @@
+---
+import Icon from './Icon.astro';
+import { hero, site } from '../data/site';
+const portrait = site.portrait;
+---
+
+<section class="hero tone-page" id="top">
+  <div class:list={['wrap', 'hero__grid', { 'hero__grid--photo': portrait }]}>
+    <div class="hero__copy">
+      <p class="hero__eyebrow" data-load style="--i:0">{hero.eyebrow}</p>
+      <h1 class="hero__h" data-load style="--i:1">
+        <span>{hero.headline[0]}</span>
+        <span class="soft">{hero.headline[1]}</span>
+      </h1>
+      <p class="lede hero__lede" data-load style="--i:2">{hero.lede}</p>
+      <div class="hero__actions" data-load style="--i:3">
+        <a class="btn" href="#contact">Get in touch</a>
+        <a class="arrow-link" href="#projects">See the work <Icon name="right" /></a>
+        <span class="hero__social">
+          <a class="arrow-link" data-external href={site.linkedin} rel="noopener me">LinkedIn <Icon name="up-right" /></a>
+          <a class="arrow-link" data-external href={site.github} rel="noopener me">GitHub <Icon name="up-right" /></a>
+        </span>
+      </div>
+    </div>
+
+    {
+      /* PHOTO SLOT: rendered only when site.portrait is set in src/data/site.ts */
+      portrait && (
+        <figure class="hero__photo" data-load style="--i:2">
+          <img
+            src={portrait.src}
+            srcset={portrait.srcset}
+            sizes="(max-width: 720px) 92vw, 440px"
+            alt={portrait.alt}
+            width={portrait.width}
+            height={portrait.height}
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      )
+    }
+  </div>
+
+  <div class="wrap">
+    <dl class="stats" data-load style="--i:4">
+      {
+        hero.stats.map((s) => (
+          <div class="stats__item">
+            <dt class="stats__label">{s.label}</dt>
+            <dd class="stats__value">{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--bg);
+    padding-top: clamp(56px, 10vw, 136px);
+    padding-bottom: clamp(56px, 8vw, 104px);
+  }
+  .hero__grid--photo {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+  }
+  /* Beside a photo the headline has less room, so it steps down a size. */
+  .hero__grid--photo .hero__h {
+    font-size: clamp(2.75rem, 5.7vw, 4.75rem);
+    max-width: none;
+  }
+  .hero__eyebrow {
+    font-size: var(--t-small);
+    font-weight: 600;
+    color: var(--fg-2);
+    margin-bottom: clamp(20px, 3vw, 36px);
+  }
+  .hero__h {
+    font-size: var(--t-hero);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    max-width: 15.5ch;
+  }
+  .hero__h span {
+    display: block;
+    text-wrap: balance;
+  }
+  .hero__h .soft {
+    color: var(--soft);
+  }
+  .hero__lede {
+    margin-top: clamp(24px, 3.4vw, 40px);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 28px;
+    margin-top: clamp(28px, 3.6vw, 44px);
+  }
+  .hero__social {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+  }
+  .hero__social .arrow-link {
+    color: var(--fg-2);
+  }
+  .hero__social .arrow-link:hover {
+    color: var(--fg);
+  }
+  .hero__photo img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: clamp(20px, 2.6vw, 32px);
+    background: var(--page-alt);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gutter);
+    margin-top: clamp(56px, 8vw, 112px);
+    border-top: 1px solid var(--rule);
+    padding-top: clamp(20px, 2.4vw, 28px);
+  }
+  .stats__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .stats__value {
+    font-size: clamp(2.5rem, 5.4vw, 4.25rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+  }
+  .stats__label {
+    font-size: var(--t-small);
+    color: var(--fg-2);
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 720px) {
+    .hero__grid--photo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero__photo {
+      max-width: 440px;
+    }
+    .stats {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      padding-top: 0;
+    }
+    .stats__item {
+      flex-direction: row-reverse;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 16px;
+      padding-block: 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .stats__value {
+      flex: none;
+      min-width: 3.1ch;
+    }
+    .stats__label {
+      max-width: none;
+    }
+  }
+
+  /* One orchestrated moment on load. Pure CSS, so it cannot leave content hidden. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-load] {
+      animation: rise 0.9s var(--ease) both;
+      animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+    }
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+</style>
